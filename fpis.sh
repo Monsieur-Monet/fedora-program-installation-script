@@ -1,13 +1,18 @@
 #!/bin/bash
 printf "Welcome to the fedora program installation script by Monsieur-Monet.\n"
-printf "First, we'll update your system\n"
-read -p "Would you like to continue? " -n 1 -r
-if [[ ! $REPLY =~ ^[Yy]$ ]]
-then
-    exit 1
-fi
-printf "\n\n"
+printf "First, we'll update your system\n\n"
 sudo dnf update --refresh
+printf "\n"
+read -p "Do you use a NVIDA GPU with your system?" -n 1 -r
+if [[ ! $REPLY =~ ^[Yy]$ ]]; then
+    printf "\n\n"
+    printf "Continuing without installation of NVIDIA drivers\n"
+
+else
+    sudo dnf install fedora-workstation-repositories
+    sudo dnf config-manager --set-enabled rpmfusion-nonfree-nvidia-driver
+    sudo dnf install nvidia-settings
+fi
 printf "\n"
 printf "Now, we'll install a few flatpaks.\n"
 printf "The following flatpaks will be installed:\n"
@@ -15,8 +20,46 @@ for flatpakList in Spotify Discord VSCode Mattermost GIMP Signal DéjàDupBackup
 do
     echo $flatpakList
 done
-read -p "Would you like to continue? " -n 1 -r
+printf "\n"
+read -p "Would you like to continue?" -n 1 -r
 if [[ ! $REPLY =~ ^[Yy]$ ]]
 then
     exit 1
 fi
+printf "\n"
+flatpak remote-add --if-not-exists flathub https://flathub.org/repo/flathub.flatpakrepo
+sudo flatpak install com.discordapp.Discord com.mattermost.Desktop com.spotify.Client com.visualstudio.code org.signal.Signal org.gimp.GIMP
+printf "\n"
+printf "Flatpaks have been installed!\n"
+printf "Now we will proceed with some essential software using dnf.\n"
+printf "The following apps will be installed:\n"
+for flatpakList in Steam Terminator Inkscape Wine
+do
+    echo $flatpakList
+done
+read -p "Would you like to continue?" -n 1 -r
+if [[ ! $REPLY =~ ^[Yy]$ ]]
+then
+    exit 1
+fi
+sudo dnf -y install https://mirrors.rpmfusion.org/nonfree/fedora/rpmfusion-nonfree-release-$(rpm -E %fedora).noarch.rpm
+sudo dnf -y install steam terminator inkscape wine
+printf "\n"
+printf "Apps have been installed!\n"
+read -p "Would you like to install ZSH on your system?" -n 1 -r
+if [[ ! $REPLY =~ ^[Yy]$ ]]; then
+    printf "\n\n"
+    printf "Continuing without installation of ZSH\n"
+
+else
+    sudo dnf -y install zsh
+    chsh -s $(which zsh)
+fi
+printf "\n"
+printf "All done! You need to restart your system to finnish the installation\n"
+read -p "Would you like to restart your system now?" -n 1 -r
+if [[ ! $REPLY =~ ^[Yy]$ ]]
+then
+    exit 1
+fi
+sudo reboot
