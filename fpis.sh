@@ -33,7 +33,7 @@ printf "\n"
 printf "Flatpaks have been installed!\n"
 printf "Now we will proceed with some essential software using dnf.\n"
 printf "The following apps will be installed:\n"
-for flatpakList in Steam Terminator Inkscape deja-dup
+for flatpakList in Steam Terminator Inkscape deja-dup Papirus-Icon-Theme Arc-Icon-Theme Rofi
 do
     echo $flatpakList
 done
@@ -42,7 +42,7 @@ if [[ ! $REPLY =~ ^[Yy]$ ]]; then
     exit 1
 else
 sudo dnf -y install https://mirrors.rpmfusion.org/nonfree/fedora/rpmfusion-nonfree-release-$(rpm -E %fedora).noarch.rpm
-sudo dnf -y install steam terminator inkscape deja-dup
+sudo dnf -y install steam terminator inkscape deja-dup papirus-icon-theme arc-theme rofi
 fi
 printf "\n"
 printf "Apps have been installed!\n"
