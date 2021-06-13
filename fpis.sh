@@ -16,7 +16,7 @@ fi
 printf "\n"
 printf "Now, we'll install a few flatpaks.\n"
 printf "The following flatpaks will be installed:\n"
-for flatpakList in Spotify Discord VSCode Mattermost GIMP Signal
+for flatpakList in Spotify Discord VSCode Mattermost GIMP Signal Zoom
 do
     echo $flatpakList
 done
@@ -28,7 +28,7 @@ then
 fi
 printf "\n"
 flatpak remote-add --if-not-exists flathub https://flathub.org/repo/flathub.flatpakrepo
-sudo flatpak install com.discordapp.Discord com.mattermost.Desktop com.spotify.Client com.visualstudio.code org.signal.Signal org.gimp.GIMP
+sudo flatpak install com.discordapp.Discord com.mattermost.Desktop com.spotify.Client com.visualstudio.code org.signal.Signal org.gimp.GIMP us.zoom.Zoom
 printf "\n"
 printf "Flatpaks have been installed!\n"
 printf "Now we will proceed with some essential software using dnf.\n"
